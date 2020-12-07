@@ -1,38 +1,19 @@
-<section class="phx-hero">
-  <h1><%= gettext "Welcome to %{name}!", name: "Phoenix" %></h1>
-  <p>Peace of mind from prototype to production</p>
-</section>
 
-<section class="row">
-  <article class="column">
-    <h2>Resources</h2>
-    <ul>
-      <li>
-        <a href="https://hexdocs.pm/phoenix/overview.html">Guides &amp; Docs</a>
-      </li>
-      <li>
-        <a href="https://github.com/phoenixframework/phoenix">Source</a>
-      </li>
-      <li>
-        <a href="https://github.com/phoenixframework/phoenix/blob/v1.5/CHANGELOG.md">v1.5 Changelog</a>
-      </li>
-    </ul>
-  </article>
-  <article class="column">
-    <h2>Help</h2>
-    <ul>
-      <li>
-        <a href="https://elixirforum.com/c/phoenix-forum">Forum</a>
-      </li>
-      <li>
-        <a href="https://webchat.freenode.net/?channels=elixir-lang">#elixir-lang on Freenode IRC</a>
-      </li>
-      <li>
-        <a href="https://twitter.com/elixirphoenix">Twitter @elixirphoenix</a>
-      </li>
-      <li>
-        <a href="https://elixir-slackin.herokuapp.com/">Elixir on Slack</a>
-      </li>
-    </ul>
-  </article>
-</section>
+    <tr class='athing' id='25333350'>
+        <td align="right" valign="top" class="title"><span class="rank">1.</span></td>
+        <td valign="top" class="votelinks">
+            <center>
+                <a id='up_25333350' href='vote?id=25333350&amp;how=up&amp;goto=news'>
+                    <div class='votearrow' title='upvote'></div>
+                </a>
+            </center>
+        </td>
+        <td class="title"><a href="https://javascript.info/" class="storylink">The Modern JavaScript Tutorial</a><span class="sitebit comhead"> (<a href="from?site=javascript.info"><span class="sitestr">javascript.info</span></a>)</span>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2"></td>
+        <td class="subtext">
+            <span class="score" id="score_25333350">141 points</span> by <a href="user?id=ivanche" class="hnuser">ivanche</a> <span class="age"><a href="item?id=25333350">2 hours ago</a></span> <span id="unv_25333350"></span> | <a href="hide?id=25333350&amp;goto=news">hide</a> | <a href="item?id=25333350">35&nbsp;comments</a> </td>
+    </tr>
+    <tr class="spacer" style="height:5px"></tr>
