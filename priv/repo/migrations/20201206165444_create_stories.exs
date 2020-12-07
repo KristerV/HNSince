@@ -8,8 +8,8 @@ defmodule Hnvisit.Repo.Migrations.CreateStories do
       add :descendants, :integer
       add :score, :integer
       add :time, :integer
-      add :title, :string
-      add :url, :string
+      add :title, :text
+      add :url, :text
     end
     create unique_index(:stories, [:hn_id])
     create index(:stories, [:time, :score])

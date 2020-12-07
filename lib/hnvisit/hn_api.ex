@@ -1,7 +1,7 @@
 defmodule Hnvisit.HNAPI do
   def get_item(item_id) do
     "https://hacker-news.firebaseio.com/v0/item/#{item_id}.json"
-    |> HTTPoison.get()
+    |> HTTPoison.get(recv_timeout: 20000, timeout: 20000)
     |> case do
       {:ok, %{status_code: 200, body: body}} ->
         Poison.decode(body)
@@ -16,7 +16,7 @@ defmodule Hnvisit.HNAPI do
 
   def get_last_item do
     "https://hacker-news.firebaseio.com/v0/maxitem.json"
-    |> HTTPoison.get()
+    |> HTTPoison.get(recv_timeout: 20000, timeout: 20000)
     |> case do
       {:ok, %{status_code: 200, body: body}} ->
         Poison.decode(body)

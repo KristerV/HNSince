@@ -77,11 +77,11 @@ config :hnvisit, Hnvisit.Scheduler,
     ]
   ]
 
-config :hnvisit, Hnvisit.KeepFresh, batch_size: 100
+config :hnvisit, Hnvisit.KeepFresh, batch_size: 1000
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :console,
-  level: :info,
+  level: :debug,
   format: "[$level] $message\n"
 
 # Set a higher stacktrace during development. Avoid configuring such

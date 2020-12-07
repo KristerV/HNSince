@@ -24,16 +24,23 @@ defmodule Hnvisit.KeepFresh do
 
     stories =
       for hn_id <- last_db..last_hn do
-        HNAPI.get_item(hn_id)
-        |> case do
-          {:error, err} -> Logger.error("Getting story error", err: err)
-          {:ok, %{"type" => "story"} = item} -> Story.from_item(item, false)
-          {:ok, %{"type" => _type}} -> nil
-        end
+        Task.async(fn ->
+          HNAPI.get_item(hn_id)
+          |> case do
+            {:error, err} -> err |> inspect |> Logger.error()
+            {:ok, %{"type" => "story"} = item} -> Story.from_item(item, false)
+            {:ok, %{"type" => _type}} -> nil
+          end
+        end)
       end
+      |> Task.await_many(60 * 1000)
       |> Enum.filter(fn x -> is_map(x) end)
 
-    {inserts, _errors} = Repo.insert_all(Story, stories, on_conflict: :nothing)
+    {inserts, _errors} =
+      Repo.insert_all(Story, stories,
+        on_conflict: :nothing,
+        conflict_target: :hn_id
+      )
 
     Logger.info(
       "Inserted new stories: #{inserts}. Progress: #{List.last(stories).hn_id} / #{last_hn_real}"
@@ -42,8 +49,6 @@ defmodule Hnvisit.KeepFresh do
     if inserts > 0 do
       new()
     end
-
-    # TODO: make parallel
   end
 
   def updates do
