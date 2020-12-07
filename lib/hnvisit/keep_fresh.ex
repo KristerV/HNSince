@@ -4,11 +4,12 @@ alias Hnvisit.HNAPI, as: HNAPI
 alias Hnvisit.Story, as: Story
 
 defmodule Hnvisit.KeepFresh do
+  @conf Application.get_env(:hnvisit, Hnvisit.KeepFresh)
   def new do
     last_db =
       Story.get_last()
       |> case do
-        nil -> 1
+        nil -> @conf[:starting_id]
         %{hn_id: hn_id} -> hn_id
       end
 
@@ -19,8 +20,7 @@ defmodule Hnvisit.KeepFresh do
         {:error, err} -> Logger.error("Getting last item failed", err)
       end
 
-    last_hn =
-      min(last_hn_real, last_db + Application.get_env(:hnvisit, Hnvisit.KeepFresh)[:batch_size])
+    last_hn = min(last_hn_real, last_db + @conf[:batch_size])
 
     stories =
       for hn_id <- last_db..last_hn do
@@ -30,6 +30,7 @@ defmodule Hnvisit.KeepFresh do
             {:error, err} -> err |> inspect |> Logger.error()
             {:ok, %{"type" => "story"} = item} -> Story.from_item(item, false)
             {:ok, %{"type" => _type}} -> nil
+            {:ok, nil} -> nil
           end
         end)
       end

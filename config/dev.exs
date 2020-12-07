@@ -66,7 +66,7 @@ config :hnvisit, HnvisitWeb.Endpoint,
   ]
 
 config :hnvisit, Hnvisit.Scheduler,
-  schedule: {:extended, "*/10 * * * * *"},
+  schedule: {:extended, "*/30 * * * * *"},
   overlap: false,
   jobs: [
     new: [
@@ -77,7 +77,9 @@ config :hnvisit, Hnvisit.Scheduler,
     ]
   ]
 
-config :hnvisit, Hnvisit.KeepFresh, batch_size: 1000
+config :hnvisit, Hnvisit.KeepFresh,
+  batch_size: 1000,
+  starting_id: 25_300_000
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :console,
