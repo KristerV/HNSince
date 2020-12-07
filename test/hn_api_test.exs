@@ -15,8 +15,4 @@ defmodule HnvisitWeb.HNAPITest do
              "url" => "http://www.getdropbox.com/u/2/screencast.html"
            } == Map.drop(item, ["kids"])
   end
-
-  test "Update item" do
-    item = Hnvisit.HNAPI.get_item(8863)
-  end
 end

@@ -46,6 +46,7 @@ defmodule Hnvisit.MixProject do
       {:jason, "~> 1.0"},
       {:poison, "~> 3.1"},
       {:httpoison, "~> 1.7"},
+      {:quantum, "~> 3.0"},
       {:plug_cowboy, "~> 2.0"}
     ]
   end

@@ -14,9 +14,10 @@ defmodule Hnvisit.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Hnvisit.PubSub},
       # Start the Endpoint (http/https)
-      HnvisitWeb.Endpoint
+      HnvisitWeb.Endpoint,
       # Start a worker by calling: Hnvisit.Worker.start_link(arg)
       # {Hnvisit.Worker, arg}
+      Hnvisit.Scheduler
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

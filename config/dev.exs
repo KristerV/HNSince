@@ -65,8 +65,24 @@ config :hnvisit, HnvisitWeb.Endpoint,
     ]
   ]
 
+config :hnvisit, Hnvisit.Scheduler,
+  schedule: {:extended, "*/10 * * * * *"},
+  overlap: false,
+  jobs: [
+    new: [
+      task: {Hnvisit.KeepFresh, :new, []}
+    ],
+    updates: [
+      task: {Hnvisit.KeepFresh, :updates, []}
+    ]
+  ]
+
+config :hnvisit, Hnvisit.KeepFresh, batch_size: 100
+
 # Do not include metadata nor timestamps in development logs
-config :logger, :console, format: "[$level] $message\n"
+config :logger, :console,
+  level: :info,
+  format: "[$level] $message\n"
 
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.

@@ -1,8 +1,23 @@
 defmodule Hnvisit.HNAPI do
   def get_item(item_id) do
-    url = "https://hacker-news.firebaseio.com/v0/item/#{item_id}.json"
+    "https://hacker-news.firebaseio.com/v0/item/#{item_id}.json"
+    |> HTTPoison.get()
+    |> case do
+      {:ok, %{status_code: 200, body: body}} ->
+        Poison.decode(body)
 
-    case HTTPoison.get(url) do
+      {:ok, %{status_code: 404}} ->
+        {:error, :not_found}
+
+      {:error, err} ->
+        {:error, err}
+    end
+  end
+
+  def get_last_item do
+    "https://hacker-news.firebaseio.com/v0/maxitem.json"
+    |> HTTPoison.get()
+    |> case do
       {:ok, %{status_code: 200, body: body}} ->
         Poison.decode(body)
 

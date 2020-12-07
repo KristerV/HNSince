@@ -2,6 +2,7 @@ defmodule Hnvisit.Story do
   require Logger
   use Ecto.Schema
   import Ecto.Changeset
+  import Ecto.Query
   alias Hnvisit.Repo, as: Repo
   alias Hnvisit.Story, as: Story
 
@@ -47,8 +48,8 @@ defmodule Hnvisit.Story do
     |> Repo.insert_or_update()
   end
 
-  def from_item(item) do
-    struct(Story, %{
+  def from_item(item, to_struct \\ true) do
+    map = %{
       hn_id: item["id"],
       by: item["by"],
       descendants: item["descendants"],
@@ -56,6 +57,18 @@ defmodule Hnvisit.Story do
       time: item["time"],
       title: item["title"],
       url: item["url"]
-    })
+    }
+
+    if to_struct do
+      struct(Story, map)
+    else
+      map
+    end
+  end
+
+  def get_last do
+    Story
+    |> last
+    |> Repo.one()
   end
 end
