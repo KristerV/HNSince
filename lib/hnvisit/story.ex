@@ -19,7 +19,7 @@ defmodule Hnvisit.Story do
   def changeset(story, attrs) do
     story
     |> cast(attrs, [:hn_id, :by, :descendants, :score, :time, :title, :url])
-    |> validate_required([:hn_id, :by, :descendants, :score, :time, :title, :url])
+    |> validate_required([:hn_id, :score, :time, :title])
   end
 
   def get_and_upsert(hn_id) do

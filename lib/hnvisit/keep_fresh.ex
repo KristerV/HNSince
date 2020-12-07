@@ -1,4 +1,5 @@
 require Logger
+import Ecto.Query
 alias Hnvisit.Repo, as: Repo
 alias Hnvisit.HNAPI, as: HNAPI
 alias Hnvisit.Story, as: Story
@@ -22,20 +23,7 @@ defmodule Hnvisit.KeepFresh do
 
     last_hn = min(last_hn_real, last_db + @conf[:batch_size])
 
-    stories =
-      for hn_id <- last_db..last_hn do
-        Task.async(fn ->
-          HNAPI.get_item(hn_id)
-          |> case do
-            {:error, err} -> err |> inspect |> Logger.error()
-            {:ok, %{"type" => "story"} = item} -> Story.from_item(item, false)
-            {:ok, %{"type" => _type}} -> nil
-            {:ok, nil} -> nil
-          end
-        end)
-      end
-      |> Task.await_many(60 * 1000)
-      |> Enum.filter(fn x -> is_map(x) end)
+    stories = HNAPI.get_items(last_db..last_hn)
 
     {inserts, _errors} =
       Repo.insert_all(Story, stories,
@@ -53,8 +41,27 @@ defmodule Hnvisit.KeepFresh do
   end
 
   def updates do
-    # get updates from HN
-    # fetch all
-    # upsert
+    {:ok, %{"items" => items}} = HNAPI.get_updates()
+
+    existing =
+      from(s in Story,
+        where: s.hn_id in ^items
+      )
+      |> Repo.all()
+
+    stories =
+      existing
+      |> Enum.map(fn x -> x.hn_id end)
+      |> HNAPI.get_items()
+
+    for {db_story, hn_story} <- Enum.zip(existing, stories),
+        db_story.hn_id == hn_story.hn_id do
+      Story.changeset(db_story, hn_story)
+      |> Repo.update()
+      |> case do
+        {:ok, struct} -> :ok
+        err -> err
+      end
+    end
   end
 end
