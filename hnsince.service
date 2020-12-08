@@ -1,0 +1,22 @@
+[Unit]
+Description=HNSince
+After=network.target
+
+[Service]
+Type=simple
+User=web
+Group=web
+WorkingDirectory=/var/lib/hnsince
+TimeoutStartSec=180
+ExecStartPre=/var/lib/hnsince/bin/hnsince eval "HNSince.Release.migrate"
+ExecStart=/var/lib/hnsince/bin/hnsince start
+ExecStop=/var/lib/hnsince/bin/hnsince stop
+Restart=on-failure
+RestartSec=5
+SyslogIdentifier=hnsince
+RemainAfterExit=no
+Environment=MIX_ENV=prod
+Environment=LANG=en_US.UTF-8
+
+[Install]
+WantedBy=multi-user.target

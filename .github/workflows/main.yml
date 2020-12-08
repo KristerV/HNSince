@@ -1,0 +1,104 @@
+name: Deploy app
+
+on:
+  push:
+    branches: production
+
+jobs:
+  test:
+    runs-on: ubuntu-18.04
+    services:
+      postgres:
+        image: postgres:11
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: my_app_test
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    env:
+      MIX_ENV: test
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-elixir@v1.0.0
+        with:
+          otp-version: "23.1"
+          elixir-version: "1.11.2"
+      - uses: actions/cache@v1
+        with:
+          path: deps
+          key: ${{ runner.os }}-mix-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
+          restore-keys: |
+            ${{ runner.os }}-mix-
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "14.x"
+
+      - run: mix local.rebar --force
+      - run: mix local.hex --force
+      - run: mix deps.get
+      - run: npm install --prefix assets
+      - run: npm run deploy --prefix assets
+      - run: mix test
+
+  deploy:
+    runs-on: ubuntu-18.04
+    needs: test
+    env:
+      MIX_ENV: prod
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v2
+
+      - name: Setup Elixir
+        uses: actions/setup-elixir@v1.0.0
+        with:
+          otp-version: "23.1"
+          elixir-version: "1.11.2"
+
+      - name: Run cache
+        uses: actions/cache@v1
+        with:
+          path: deps
+          key: ${{ runner.os }}-mix-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
+          restore-keys: |
+            ${{ runner.os }}-mix-
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: "14.x"
+
+      - name: Build app
+        run: |
+          mix local.rebar --force
+          mix local.hex --force
+          mix deps.get --only prod
+          npm install --prefix assets
+          npm run deploy --prefix assets
+          mix compile
+          mix phx.digest
+          mix release
+          pwd
+          ls -alh
+
+      - name: Copy to server
+        uses: Pendect/action-rsyncer@v1.1.0
+        env:
+          DEPLOY_KEY: ${{secrets.SSH_PRIVATE_KEY}}
+        with:
+          flags: "-avzr --delete"
+          options: "--exclude key"
+          ssh_options: ""
+          src: "_build/prod/rel/hnsince/*"
+          dest: "web@hnsince.com:/var/lib/hnsince/"
+
+      - name: Restart service
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > key
+          chmod 700 key
+          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i key web@hnsince.com 'sudo systemctl restart hnsince.service'
