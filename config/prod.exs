@@ -16,6 +16,27 @@ config :hnvisit, HnvisitWeb.Endpoint,
 # Do not print debug messages in production
 config :logger, level: :info
 
+config :hnvisit, Hnvisit.Scheduler,
+  schedule: {:extended, "*/30 * * * * *"},
+  overlap: false,
+  jobs: [
+    new: [
+      task: {Hnvisit.KeepFresh, :new, []}
+    ],
+    updates: [
+      task: {Hnvisit.KeepFresh, :updates, []}
+    ]
+  ]
+
+config :hnvisit, Hnvisit.KeepFresh,
+  batch_size: 1000,
+  starting_id: 1
+
+config :hnvisit, Hnvisit.PageView,
+  stories_visible: 30,
+  past_buffer_minutes: 60,
+  analytics_hook: "https://bashboard.io/hnsincelastvisit/landing/visits"
+
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key

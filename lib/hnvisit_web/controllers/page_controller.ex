@@ -7,6 +7,14 @@ defmodule HnvisitWeb.PageController do
   use HnvisitWeb, :controller
 
   def index(conn, params) do
+    if @conf[:analytics_hook] do
+      HTTPoison.post(
+        @conf[:analytics_hook],
+        "{\"visit\": 1}",
+        [{"Content-Type", "application/json"}]
+      )
+    end
+
     last_visit = get_session(conn, :last_visit)
 
     conn = put_session(conn, :last_visit, DateTime.utc_now())
