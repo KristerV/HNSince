@@ -1,36 +1,35 @@
-# HNSince
+# HN Since Your Last Visit
 
-To start your Phoenix server:
+[HNSince.com](https://hnsince.com) - See all the top HN stories since the time you were last visiting.
 
-- Install dependencies with `mix deps.get`
-- Create and migrate your database with `mix ecto.setup`
-- Install Node.js dependencies with `npm install` inside the `assets` directory
-- Start Phoenix endpoint with `mix phx.server`
+- Data from official HN API
+- Looks just like you're used to
+- All links go straight back to HN
+- Minumum time window is 1 hour (to save you from the dreadful blank page when checking every 2 minutes)
+
+## About
+
+I check HN sometimes hourly, sometimes monthly, (rarely, but) sometimes quarterly. I don't know how long I've been away and the FOMO on good stories was driving me nuts. There is the kind of secret [/best](https://news.ycombinator.com/best) section on HN, but that only covers a week (I think). So this idea came to me and took **only** a year to finally sit down and write it.
+
+- KristerV, founder of [randomforest.ee](https://randomforest.ee/)
+
+## Run a local server
+
+Prequisites
+
+- Erlang/OTP 23
+- Elixir 1.11+
+- Phoenix
+- PostgreSQL (or just `docker run --name postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres:11`)
+
+```
+mix deps.get
+mix ecto.setup
+mix phx.server
+```
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+## Contributing
 
-## Learn more
-
-- Official website: https://www.phoenixframework.org/
-- Guides: https://hexdocs.pm/phoenix/overview.html
-- Docs: https://hexdocs.pm/phoenix
-- Forum: https://elixirforum.com/c/phoenix-forum
-- Source: https://github.com/phoenixframework/phoenix
-
-## Notes
-
-```
-docker run --name postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres:11
-docker start postgres
-```
-
-## Run dev server
-
-```
-docker start postgres
-mix deps.get
-mix ecto.create && mix ecto.migrate
-iex -S mix phx.server
-```
+Feel free to make PR's or issues with bugs and feature requests.
