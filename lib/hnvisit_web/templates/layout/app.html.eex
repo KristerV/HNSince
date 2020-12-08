@@ -10,8 +10,11 @@
 </head>
 
 <body>
+    <a id="gh-logo" target="_blank" href="https://github.com/KristerV/hnsince">
+        <img src="https://raw.githubusercontent.com/rdimascio/icons/master/icons/github.svg"/>
+    </a>
     <center>
-          <td><h3>HN since you last visited:
+          <td><h3>HN since your last visit:
           <%= if @last_visit != nil do %>
             <time datetime="<%= @last_visit %>"></time>
           <%= else %>
@@ -72,5 +75,17 @@
     </center>
 </body>
 <%# <script type='text/javascript' src='https://news.ycombinator.com/hn.js'></script> %>
+
+<style>
+#gh-logo {
+    width: 1.6rem;
+    opacity: 0.5;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 0.5rem;
+}
+</style>
 
 </html>
