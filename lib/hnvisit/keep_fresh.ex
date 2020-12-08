@@ -44,25 +44,49 @@ defmodule Hnvisit.KeepFresh do
   def updates do
     {:ok, %{"items" => items}} = HNAPI.get_updates()
 
+    # Only update existing posts
     existing =
       from(s in Story,
         where: s.hn_id in ^items
       )
       |> Repo.all()
 
-    stories =
+    # Fetch data of existing posts
+    %{nil: stories, true: deleted} =
       existing
       |> Enum.map(fn x -> x.hn_id end)
-      |> HNAPI.get_items()
+      |> HNAPI.get_items(true)
+      |> Enum.group_by(fn x -> x["deleted"] end)
+      |> Map.put_new(nil, [])
+      |> Map.put_new(true, [])
 
-    for {db_story, hn_story} <- Enum.zip(existing, stories),
-        db_story.hn_id == hn_story.hn_id do
-      Story.changeset(db_story, hn_story)
-      |> Repo.update()
-      |> case do
-        {:ok, struct} -> :ok
-        err -> err
-      end
+    # Delete "deleted" posts
+    if length(deleted) > 0 do
+      deleted
+      |> Enum.map(fn d -> d.hn_id end)
+      |> (&from(s in Story, where: s.hn_id in ^&1)).()
+      |> Repo.delete_all()
+
+      Logger.info("Deleted stories: #{length(deleted)}")
     end
+
+    # Update posts
+    update_count =
+      if length(stories) > 0 do
+        for {db_story, hn_story} <- Enum.zip(existing, stories),
+            db_story.hn_id == hn_story.hn_id do
+          Story.changeset(db_story, hn_story)
+          |> Repo.update()
+          |> case do
+            {:ok, struct} -> :ok
+            err -> err
+          end
+        end
+        |> Enum.count(fn x -> x == :ok end)
+      else
+        0
+      end
+
+    Logger.info("Updated stories: #{update_count}")
   end
 end

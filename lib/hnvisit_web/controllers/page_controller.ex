@@ -19,7 +19,7 @@ defmodule HnvisitWeb.PageController do
     stories =
       from(s in Story,
         where: s.time > ^buffered_time,
-        order_by: [desc: s.score],
+        order_by: [desc: s.score, desc: s.time],
         limit: ^@conf[:stories_visible]
       )
       |> Repo.all()

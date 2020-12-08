@@ -32,12 +32,13 @@ defmodule Hnvisit.HNAPI do
     end
   end
 
-  def get_items(numbers) do
+  def get_items(numbers, include_deleted \\ false) do
     for hn_id <- numbers do
       Task.async(fn ->
         get_item(hn_id)
         |> case do
           {:error, err} -> err |> inspect |> Logger.error()
+          {:ok, %{"deleted" => true}} when include_deleted == false -> nil
           {:ok, %{"type" => "story"} = item} -> Story.from_item(item, false)
           {:ok, %{"type" => _type}} -> nil
           {:ok, nil} -> nil
