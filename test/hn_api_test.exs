@@ -1,8 +1,8 @@
-defmodule HnvisitWeb.HNAPITest do
+defmodule HNSinceWeb.HNAPITest do
   use ExUnit.Case
 
   test "Simple item query" do
-    {:ok, item} = Hnvisit.HNAPI.get_item(8863)
+    {:ok, item} = HNSince.HNAPI.get_item(8863)
 
     assert %{
              "by" => "dhouston",

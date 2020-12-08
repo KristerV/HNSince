@@ -1,4 +1,4 @@
-defmodule HnvisitWeb.Telemetry do
+defmodule HNSinceWeb.Telemetry do
   use Supervisor
   import Telemetry.Metrics
 
@@ -31,11 +31,11 @@ defmodule HnvisitWeb.Telemetry do
       ),
 
       # Database Metrics
-      summary("hnvisit.repo.query.total_time", unit: {:native, :millisecond}),
-      summary("hnvisit.repo.query.decode_time", unit: {:native, :millisecond}),
-      summary("hnvisit.repo.query.query_time", unit: {:native, :millisecond}),
-      summary("hnvisit.repo.query.queue_time", unit: {:native, :millisecond}),
-      summary("hnvisit.repo.query.idle_time", unit: {:native, :millisecond}),
+      summary("hnsince.repo.query.total_time", unit: {:native, :millisecond}),
+      summary("hnsince.repo.query.decode_time", unit: {:native, :millisecond}),
+      summary("hnsince.repo.query.query_time", unit: {:native, :millisecond}),
+      summary("hnsince.repo.query.queue_time", unit: {:native, :millisecond}),
+      summary("hnsince.repo.query.idle_time", unit: {:native, :millisecond}),
 
       # VM Metrics
       summary("vm.memory.total", unit: {:byte, :kilobyte}),
@@ -49,7 +49,7 @@ defmodule HnvisitWeb.Telemetry do
     [
       # A module, function and arguments to be invoked periodically.
       # This function must call :telemetry.execute/3 and a metric must be added above.
-      # {HnvisitWeb, :count_users, []}
+      # {HNSinceWeb, :count_users, []}
     ]
   end
 end

@@ -1,5 +1,5 @@
-defmodule HnvisitWeb.Router do
-  use HnvisitWeb, :router
+defmodule HNSinceWeb.Router do
+  use HNSinceWeb, :router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -13,14 +13,14 @@ defmodule HnvisitWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", HnvisitWeb do
+  scope "/", HNSinceWeb do
     pipe_through :browser
 
     get "/", PageController, :index
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", HnvisitWeb do
+  # scope "/api", HNSinceWeb do
   #   pipe_through :api
   # end
 
@@ -36,7 +36,7 @@ defmodule HnvisitWeb.Router do
 
     scope "/" do
       pipe_through :browser
-      live_dashboard "/dashboard", metrics: HnvisitWeb.Telemetry
+      live_dashboard "/dashboard", metrics: HNSinceWeb.Telemetry
     end
   end
 end

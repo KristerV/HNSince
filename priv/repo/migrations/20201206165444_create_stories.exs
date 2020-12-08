@@ -1,4 +1,4 @@
-defmodule Hnvisit.Repo.Migrations.CreateStories do
+defmodule HNSince.Repo.Migrations.CreateStories do
   use Ecto.Migration
 
   def change do

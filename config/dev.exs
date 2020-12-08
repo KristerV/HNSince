@@ -1,10 +1,10 @@
 use Mix.Config
 
 # Configure your database
-config :hnvisit, Hnvisit.Repo,
+config :hnsince, HNSince.Repo,
   username: "postgres",
   password: "postgres",
-  database: "hnvisit_dev",
+  database: "hnsince_dev",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
@@ -15,7 +15,7 @@ config :hnvisit, Hnvisit.Repo,
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with webpack to recompile .js and .css sources.
-config :hnvisit, HnvisitWeb.Endpoint,
+config :hnsince, HNSinceWeb.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,
@@ -55,33 +55,33 @@ config :hnvisit, HnvisitWeb.Endpoint,
 # different ports.
 
 # Watch static and templates for browser reloading.
-config :hnvisit, HnvisitWeb.Endpoint,
+config :hnsince, HNSinceWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/hnvisit_web/(live|views)/.*(ex)$",
-      ~r"lib/hnvisit_web/templates/.*(eex)$"
+      ~r"lib/hnsince_web/(live|views)/.*(ex)$",
+      ~r"lib/hnsince_web/templates/.*(eex)$"
     ]
   ]
 
-config :hnvisit, Hnvisit.Scheduler,
+config :hnsince, HNSince.Scheduler,
   schedule: {:extended, "*/30 * * * * *"},
   overlap: false,
   jobs: [
     new: [
-      task: {Hnvisit.KeepFresh, :new, []}
+      task: {HNSince.KeepFresh, :new, []}
     ],
     updates: [
-      task: {Hnvisit.KeepFresh, :updates, []}
+      task: {HNSince.KeepFresh, :updates, []}
     ]
   ]
 
-config :hnvisit, Hnvisit.KeepFresh,
+config :hnsince, HNSince.KeepFresh,
   batch_size: 1000,
   starting_id: 25_340000
 
-config :hnvisit, Hnvisit.PageView,
+config :hnsince, HNSince.PageView,
   stories_visible: 30,
   past_buffer_minutes: 60
 

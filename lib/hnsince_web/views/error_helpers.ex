@@ -1,4 +1,4 @@
-defmodule HnvisitWeb.ErrorHelpers do
+defmodule HNSinceWeb.ErrorHelpers do
   @moduledoc """
   Conveniences for translating and building error messages.
   """
@@ -39,9 +39,9 @@ defmodule HnvisitWeb.ErrorHelpers do
     # should be written to the errors.po file. The :count option is
     # set by Ecto and indicates we should also apply plural rules.
     if count = opts[:count] do
-      Gettext.dngettext(HnvisitWeb.Gettext, "errors", msg, msg, count, opts)
+      Gettext.dngettext(HNSinceWeb.Gettext, "errors", msg, msg, count, opts)
     else
-      Gettext.dgettext(HnvisitWeb.Gettext, "errors", msg, opts)
+      Gettext.dgettext(HNSinceWeb.Gettext, "errors", msg, opts)
     end
   end
 end

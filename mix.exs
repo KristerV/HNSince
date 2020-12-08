@@ -1,9 +1,9 @@
-defmodule Hnvisit.MixProject do
+defmodule HNSince.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :hnvisit,
+      app: :hnsince,
       version: "0.1.0",
       elixir: "~> 1.7",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -19,7 +19,7 @@ defmodule Hnvisit.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {Hnvisit.Application, []},
+      mod: {HNSince.Application, []},
       extra_applications: [:logger, :runtime_tools, :timex]
     ]
   end

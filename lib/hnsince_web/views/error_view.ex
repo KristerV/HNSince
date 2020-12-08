@@ -1,5 +1,5 @@
-defmodule HnvisitWeb.ErrorView do
-  use HnvisitWeb, :view
+defmodule HNSinceWeb.ErrorView do
+  use HNSinceWeb, :view
 
   # If you want to customize a particular status code
   # for a certain format, you may uncomment below.

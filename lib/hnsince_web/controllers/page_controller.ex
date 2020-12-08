@@ -1,10 +1,10 @@
 import Ecto.Query
-alias Hnvisit.Repo, as: Repo
-alias Hnvisit.Story, as: Story
+alias HNSince.Repo, as: Repo
+alias HNSince.Story, as: Story
 
-defmodule HnvisitWeb.PageController do
-  @conf Application.get_env(:hnvisit, Hnvisit.PageView)
-  use HnvisitWeb, :controller
+defmodule HNSinceWeb.PageController do
+  @conf Application.get_env(:hnsince, HNSince.PageView)
+  use HNSinceWeb, :controller
 
   def index(conn, params) do
     if @conf[:analytics_hook] do
@@ -20,9 +20,13 @@ defmodule HnvisitWeb.PageController do
     conn = put_session(conn, :last_visit, DateTime.utc_now())
 
     buffered_time =
-      last_visit
-      |> DateTime.add(-60 * @conf[:past_buffer_minutes], :second)
-      |> DateTime.to_unix()
+      if !is_nil(last_visit) do
+        last_visit
+        |> DateTime.add(-60 * @conf[:past_buffer_minutes], :second)
+        |> DateTime.to_unix()
+      else
+        0
+      end
 
     stories =
       from(s in Story,

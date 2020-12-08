@@ -1,12 +1,12 @@
-defmodule HnvisitWeb do
+defmodule HNSinceWeb do
   @moduledoc """
   The entrypoint for defining your web interface, such
   as controllers, views, channels and so on.
 
   This can be used in your application as:
 
-      use HnvisitWeb, :controller
-      use HnvisitWeb, :view
+      use HNSinceWeb, :controller
+      use HNSinceWeb, :view
 
   The definitions below will be executed for every view,
   controller, etc, so keep them short and clean, focused
@@ -19,19 +19,19 @@ defmodule HnvisitWeb do
 
   def controller do
     quote do
-      use Phoenix.Controller, namespace: HnvisitWeb
+      use Phoenix.Controller, namespace: HNSinceWeb
 
       import Plug.Conn
-      import HnvisitWeb.Gettext
-      alias HnvisitWeb.Router.Helpers, as: Routes
+      import HNSinceWeb.Gettext
+      alias HNSinceWeb.Router.Helpers, as: Routes
     end
   end
 
   def view do
     quote do
       use Phoenix.View,
-        root: "lib/hnvisit_web/templates",
-        namespace: HnvisitWeb
+        root: "lib/hnsince_web/templates",
+        namespace: HNSinceWeb
 
       # Import convenience functions from controllers
       import Phoenix.Controller,
@@ -54,7 +54,7 @@ defmodule HnvisitWeb do
   def channel do
     quote do
       use Phoenix.Channel
-      import HnvisitWeb.Gettext
+      import HNSinceWeb.Gettext
     end
   end
 
@@ -66,9 +66,9 @@ defmodule HnvisitWeb do
       # Import basic rendering functionality (render, render_layout, etc)
       import Phoenix.View
 
-      import HnvisitWeb.ErrorHelpers
-      import HnvisitWeb.Gettext
-      alias HnvisitWeb.Router.Helpers, as: Routes
+      import HNSinceWeb.ErrorHelpers
+      import HNSinceWeb.Gettext
+      alias HNSinceWeb.Router.Helpers, as: Routes
     end
   end
 

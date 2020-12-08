@@ -1,16 +1,16 @@
-defmodule HnvisitWeb.Endpoint do
-  use Phoenix.Endpoint, otp_app: :hnvisit
+defmodule HNSinceWeb.Endpoint do
+  use Phoenix.Endpoint, otp_app: :hnsince
 
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
   @session_options [
     store: :cookie,
-    key: "_hnvisit_key",
+    key: "_hnsince_key",
     signing_salt: "hARuQunO"
   ]
 
-  socket "/socket", HnvisitWeb.UserSocket,
+  socket "/socket", HNSinceWeb.UserSocket,
     websocket: true,
     longpoll: false
 
@@ -22,7 +22,7 @@ defmodule HnvisitWeb.Endpoint do
   # when deploying your static files in production.
   plug Plug.Static,
     at: "/",
-    from: :hnvisit,
+    from: :hnsince,
     gzip: false,
     only: ~w(css fonts images js favicon.ico robots.txt)
 
@@ -32,7 +32,7 @@ defmodule HnvisitWeb.Endpoint do
     socket "/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket
     plug Phoenix.LiveReloader
     plug Phoenix.CodeReloader
-    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :hnvisit
+    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :hnsince
   end
 
   plug Phoenix.LiveDashboard.RequestLogger,
@@ -50,5 +50,5 @@ defmodule HnvisitWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
-  plug HnvisitWeb.Router
+  plug HNSinceWeb.Router
 end

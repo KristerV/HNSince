@@ -1,11 +1,11 @@
 require Logger
 import Ecto.Query
-alias Hnvisit.Repo, as: Repo
-alias Hnvisit.HNAPI, as: HNAPI
-alias Hnvisit.Story, as: Story
+alias HNSince.Repo, as: Repo
+alias HNSince.HNAPI, as: HNAPI
+alias HNSince.Story, as: Story
 
-defmodule Hnvisit.KeepFresh do
-  @conf Application.get_env(:hnvisit, Hnvisit.KeepFresh)
+defmodule HNSince.KeepFresh do
+  @conf Application.get_env(:hnsince, HNSince.KeepFresh)
 
   def new do
     last_db =

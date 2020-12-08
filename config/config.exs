@@ -7,15 +7,15 @@
 # General application configuration
 use Mix.Config
 
-config :hnvisit,
-  ecto_repos: [Hnvisit.Repo]
+config :hnsince,
+  ecto_repos: [HNSince.Repo]
 
 # Configures the endpoint
-config :hnvisit, HnvisitWeb.Endpoint,
+config :hnsince, HNSinceWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "B4dAOeknfX4KxXWrVw/eQbfAA2UOC3m1b3sjOpNC4xJtzY8AU43wTRqvKEhOG5VN",
-  render_errors: [view: HnvisitWeb.ErrorView, accepts: ~w(html json), layout: false],
-  pubsub_server: Hnvisit.PubSub,
+  render_errors: [view: HNSinceWeb.ErrorView, accepts: ~w(html json), layout: false],
+  pubsub_server: HNSince.PubSub,
   live_view: [signing_salt: "uEOVYSBh"]
 
 # Configures Elixir's Logger

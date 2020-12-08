@@ -1,4 +1,4 @@
-defmodule Hnvisit.Application do
+defmodule HNSince.Application do
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
   @moduledoc false
@@ -8,28 +8,28 @@ defmodule Hnvisit.Application do
   def start(_type, _args) do
     children = [
       # Start the Ecto repository
-      Hnvisit.Repo,
+      HNSince.Repo,
       # Start the Telemetry supervisor
-      HnvisitWeb.Telemetry,
+      HNSinceWeb.Telemetry,
       # Start the PubSub system
-      {Phoenix.PubSub, name: Hnvisit.PubSub},
+      {Phoenix.PubSub, name: HNSince.PubSub},
       # Start the Endpoint (http/https)
-      HnvisitWeb.Endpoint,
-      # Start a worker by calling: Hnvisit.Worker.start_link(arg)
-      # {Hnvisit.Worker, arg}
-      Hnvisit.Scheduler
+      HNSinceWeb.Endpoint,
+      # Start a worker by calling: HNSince.Worker.start_link(arg)
+      # {HNSince.Worker, arg}
+      HNSince.Scheduler
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: Hnvisit.Supervisor]
+    opts = [strategy: :one_for_one, name: HNSince.Supervisor]
     Supervisor.start_link(children, opts)
   end
 
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.
   def config_change(changed, _new, removed) do
-    HnvisitWeb.Endpoint.config_change(changed, removed)
+    HNSinceWeb.Endpoint.config_change(changed, removed)
     :ok
   end
 end

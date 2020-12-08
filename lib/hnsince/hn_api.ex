@@ -1,7 +1,7 @@
 require Logger
-alias Hnvisit.Story, as: Story
+alias HNSince.Story, as: Story
 
-defmodule Hnvisit.HNAPI do
+defmodule HNSince.HNAPI do
   def get_item(item_id) do
     "https://hacker-news.firebaseio.com/v0/item/#{item_id}.json"
     |> make_request()

@@ -1,10 +1,10 @@
-defmodule Hnvisit.Story do
+defmodule HNSince.Story do
   require Logger
   use Ecto.Schema
   import Ecto.Changeset
   import Ecto.Query
-  alias Hnvisit.Repo, as: Repo
-  alias Hnvisit.Story, as: Story
+  alias HNSince.Repo, as: Repo
+  alias HNSince.Story, as: Story
 
   schema "stories" do
     field :by, :string
@@ -23,7 +23,7 @@ defmodule Hnvisit.Story do
   end
 
   def get_and_upsert(hn_id) do
-    Hnvisit.HNAPI.get_item(hn_id)
+    HNSince.HNAPI.get_item(hn_id)
     |> case do
       {:error, err} ->
         Logger.warning("Fetching HN item error", err)
