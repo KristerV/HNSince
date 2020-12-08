@@ -11,6 +11,7 @@ defmodule Hnvisit.Repo.Migrations.CreateStories do
       add :title, :text
       add :url, :text
     end
+
     create unique_index(:stories, [:hn_id])
     create index(:stories, [:time, :score])
   end

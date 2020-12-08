@@ -81,6 +81,10 @@ config :hnvisit, Hnvisit.KeepFresh,
   batch_size: 1000,
   starting_id: 25_300_000
 
+config :hnvisit, Hnvisit.PageView,
+  stories_visible: 30,
+  past_buffer_minutes: 60 * 6
+
 # Do not include metadata nor timestamps in development logs
 config :logger, :console,
   level: :debug,

@@ -6,6 +6,7 @@ alias Hnvisit.Story, as: Story
 
 defmodule Hnvisit.KeepFresh do
   @conf Application.get_env(:hnvisit, Hnvisit.KeepFresh)
+
   def new do
     last_db =
       Story.get_last()

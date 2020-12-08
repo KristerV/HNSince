@@ -20,7 +20,7 @@ defmodule Hnvisit.MixProject do
   def application do
     [
       mod: {Hnvisit.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :timex]
     ]
   end
 
@@ -47,7 +47,8 @@ defmodule Hnvisit.MixProject do
       {:poison, "~> 3.1"},
       {:httpoison, "~> 1.7"},
       {:quantum, "~> 3.0"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      {:timex, "~> 3.0"}
     ]
   end
 

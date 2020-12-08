@@ -1,19 +1,36 @@
+<%= for story <- @stories do %>
 
-    <tr class='athing' id='25333350'>
-        <td align="right" valign="top" class="title"><span class="rank">1.</span></td>
+    <tr class='athing' id='<%= story.hn_id%>'>
+        <td align="right" valign="top" class="title">
+            <span class="rank">&nbsp;<%# Rank is a separate request and a bit meaningless in this context %></span>
+        </td>
         <td valign="top" class="votelinks">
             <center>
-                <a id='up_25333350' href='vote?id=25333350&amp;how=up&amp;goto=news'>
+                <a id='up_<%= story.hn_id%>' href='https://news.ycombinator.com/vote?id=<%= story.hn_id%>&amp;how=up&amp;goto=news'>
                     <div class='votearrow' title='upvote'></div>
                 </a>
             </center>
         </td>
-        <td class="title"><a href="https://javascript.info/" class="storylink">The Modern JavaScript Tutorial</a><span class="sitebit comhead"> (<a href="from?site=javascript.info"><span class="sitestr">javascript.info</span></a>)</span>
+        <td class="title">
+        <a href="<%= story.url %>" class="storylink"><%= story.title %></a>
+        <span class="sitebit comhead"> (
+            <a href="https://news.ycombinator.com/from?site=<%= story.domain %>">
+                <span class="sitestr"><%= story.domain %></span>
+            </a>)</span>
         </td>
     </tr>
     <tr>
         <td colspan="2"></td>
         <td class="subtext">
-            <span class="score" id="score_25333350">141 points</span> by <a href="user?id=ivanche" class="hnuser">ivanche</a> <span class="age"><a href="item?id=25333350">2 hours ago</a></span> <span id="unv_25333350"></span> | <a href="hide?id=25333350&amp;goto=news">hide</a> | <a href="item?id=25333350">35&nbsp;comments</a> </td>
+            <span class="score" id="score_<%= story.hn_id%>"><%= story.score %> points</span>
+            by
+            <a href="https://news.ycombinator.com/user?id=<%= story.by %>" class="hnuser"><%= story.by %></a>
+            <span class="age"><a href="https://news.ycombinator.com/item?id=<%= story.hn_id%>"><%= story.past %></a></span>
+            <span id="unv_<%= story.hn_id%>"></span>
+            | <a href="https://news.ycombinator.com/hide?id=<%= story.hn_id%>&amp;goto=news">hide</a>
+            | <a href="https://news.ycombinator.com/item?id=<%= story.hn_id%>"><%= story.descendants %>&nbsp;comments</a>
+        </td>
     </tr>
     <tr class="spacer" style="height:5px"></tr>
+
+<% end %>

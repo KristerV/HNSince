@@ -11,7 +11,18 @@
 
 <body>
     <center>
-          <td><h3>HN since you last visited on NEVER</h3></td>
+          <td><h3>HN since you last visited:
+          <%= if @last_visit != nil do %>
+            <time datetime="<%= @last_visit %>"></time>
+          <%= else %>
+            <a target="_blank" href="https://news.ycombinator.com/item?id=1">Oct 9, 2006 (HN first post)</a>
+          <% end %>
+          <script>
+          Array.from(document.querySelectorAll('time[datetime]')).forEach(function(el){
+            el.innerText = new Date(el.getAttribute('datetime')).toLocaleString();
+          })
+          </script>
+          </h3></td>
         <table id="hnmain" border="0" cellpadding="0" cellspacing="0" width="85%" bgcolor="#f6f6ef">
             <tr>
                 <td bgcolor="#ff6600">
@@ -60,6 +71,6 @@
         </table>
     </center>
 </body>
-<script type='text/javascript' src='https://news.ycombinator.com/hn.js'></script>
+<%# <script type='text/javascript' src='https://news.ycombinator.com/hn.js'></script> %>
 
 </html>
