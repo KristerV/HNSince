@@ -6,14 +6,16 @@ defmodule HNSinceWeb.PageController do
   @conf Application.get_env(:hnsince, HNSince.PageView)
   use HNSinceWeb, :controller
 
-  def index(conn, params) do
-    if @conf[:analytics_hook] do
-      HTTPoison.post(
-        @conf[:analytics_hook],
-        "{\"visit\": 1}",
-        [{"Content-Type", "application/json"}]
-      )
-    end
+  def index(conn, _params) do
+    Task.start(fn ->
+      if @conf[:analytics_hook] do
+        HTTPoison.post(
+          @conf[:analytics_hook],
+          "{\"visit\": 1}",
+          [{"Content-Type", "application/json"}]
+        )
+      end
+    end)
 
     last_visit =
       get_session(conn, :last_visit)
