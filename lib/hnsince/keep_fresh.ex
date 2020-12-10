@@ -33,7 +33,9 @@ defmodule HNSince.KeepFresh do
       )
 
     Logger.info(
-      "Inserted new stories: #{inserts}. Progress: #{List.last(stories).hn_id} / #{last_hn_real}"
+      "Inserted new stories: #{inserts}. Progress: #{List.last(stories).hn_id} out of #{
+        last_hn_real
+      } (#{last_hn_real - List.last(stories).hn_id} left)"
     )
 
     if inserts > 0 do

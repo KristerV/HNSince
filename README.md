@@ -11,7 +11,7 @@
 
 I check HN sometimes hourly, sometimes monthly, (rarely, but) sometimes quarterly. I don't know how long I've been away and the FOMO on good stories was driving me nuts. There is the kind of secret [/best](https://news.ycombinator.com/best) section on HN, but that only covers a week (I think). So this idea came to me and took **only** a year to finally sit down and write it.
 
-- KristerV, founder of [randomforest.ee](https://randomforest.ee/)
+Temporary plug: Me and my team at [randomforest.ee](https://randomforest.ee/) are available for hire.
 
 ## Run a local server
 
