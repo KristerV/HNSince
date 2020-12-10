@@ -14,11 +14,14 @@
         <img src="https://raw.githubusercontent.com/rdimascio/icons/master/icons/github.svg"/>
     </a>
     <center>
-          <td><h3>HN since your last visit:
-          <%= if @last_visit != nil do %>
-            <time datetime="<%= @last_visit %>"></time>
+          <td><h3>HN Since your last visit
+          <%= if !is_nil(@last_visit) do %>
+            <%= @last_visit %>
+            <%= if !is_nil(@min_hours) do %>
+                (showing <%= @min_hours %>h)
+            <% end %>
           <%= else %>
-            <a target="_blank" href="https://news.ycombinator.com/item?id=1">Oct 9, 2006 (HN first post)</a>
+            <a target="_blank" href="https://news.ycombinator.com/item?id=1">on Oct 9, 2006 (HN first post)</a>
           <% end %>
           <script>
           Array.from(document.querySelectorAll('time[datetime]')).forEach(function(el){

@@ -33,7 +33,7 @@ config :hnsince, HNSince.KeepFresh,
 
 config :hnsince, HNSince.PageView,
   stories_visible: 30,
-  past_buffer_minutes: 60,
+  past_buffer_hours: 3,
   analytics_hook: "https://bashboard.io/hnsince/general/visits"
 
 # ## SSL Support

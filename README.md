@@ -5,7 +5,7 @@
 - Data from official HN API
 - Looks just like you're used to
 - All links go straight back to HN
-- Minumum time window is 1 hour (to save you from the dreadful blank page when checking every 2 minutes)
+- Minumum time window is 3 hours (to save you from the dreadful blank page when checking every 2 minutes)
 
 ## About
 

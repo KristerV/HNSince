@@ -15,22 +15,33 @@ defmodule HNSinceWeb.PageController do
       )
     end
 
-    last_visit = get_session(conn, :last_visit)
+    last_visit =
+      get_session(conn, :last_visit)
+      |> case do
+        nil ->
+          %{session: nil, buffered: 0, human: nil, min_hours: nil}
+
+        %DateTime{} = dt ->
+          %{
+            session: dt,
+            buffered:
+              DateTime.add(dt, -60 * 60 * @conf[:past_buffer_hours], :second)
+              |> DateTime.to_unix(),
+            human: Timex.from_now(dt),
+            min_hours:
+              if Timex.diff(DateTime.utc_now(), dt, :hours) < @conf[:past_buffer_hours] do
+                @conf[:past_buffer_hours]
+              else
+                nil
+              end
+          }
+      end
 
     conn = put_session(conn, :last_visit, DateTime.utc_now())
 
-    buffered_time =
-      if !is_nil(last_visit) do
-        last_visit
-        |> DateTime.add(-60 * @conf[:past_buffer_minutes], :second)
-        |> DateTime.to_unix()
-      else
-        0
-      end
-
     stories =
       from(s in Story,
-        where: s.time > ^buffered_time,
+        where: s.time > ^last_visit.buffered,
         order_by: [desc: s.score, desc: s.time],
         limit: ^@conf[:stories_visible]
       )
@@ -53,6 +64,10 @@ defmodule HNSinceWeb.PageController do
         })
       end)
 
-    render(conn, "index.html", last_visit: last_visit, stories: stories)
+    render(conn, "index.html",
+      last_visit: last_visit.human,
+      min_hours: last_visit.min_hours,
+      stories: stories
+    )
   end
 end
