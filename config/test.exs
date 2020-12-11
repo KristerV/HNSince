@@ -18,5 +18,10 @@ config :hnsince, HNSinceWeb.Endpoint,
   http: [port: 4002],
   server: false
 
+config :hnsince, HNSince.PageView,
+  stories_visible: 30,
+  past_buffer_hours: 3,
+  refresh_all_time_cache_hours: 1
+
 # Print only warnings and errors during test
 config :logger, level: :warn
