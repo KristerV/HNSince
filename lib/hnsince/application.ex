@@ -7,17 +7,12 @@ defmodule HNSince.Application do
 
   def start(_type, _args) do
     children = [
-      # Start the Ecto repository
       HNSince.Repo,
-      # Start the Telemetry supervisor
       HNSinceWeb.Telemetry,
-      # Start the PubSub system
       {Phoenix.PubSub, name: HNSince.PubSub},
-      # Start the Endpoint (http/https)
       HNSinceWeb.Endpoint,
-      # Start a worker by calling: HNSince.Worker.start_link(arg)
-      # {HNSince.Worker, arg}
-      HNSince.Scheduler
+      HNSince.Scheduler,
+      HNSince.AllTimeStoriesCache
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

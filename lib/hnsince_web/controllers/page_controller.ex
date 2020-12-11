@@ -1,5 +1,3 @@
-import Ecto.Query
-alias HNSince.Repo, as: Repo
 alias HNSince.Story, as: Story
 
 defmodule HNSinceWeb.PageController do
@@ -42,12 +40,10 @@ defmodule HNSinceWeb.PageController do
     conn = put_session(conn, :last_visit, DateTime.utc_now())
 
     stories =
-      from(s in Story,
-        where: s.time > ^last_visit.buffered and not is_nil(s.score),
-        order_by: [desc: s.score, desc: s.time],
-        limit: ^@conf[:stories_visible]
-      )
-      |> Repo.all()
+      case last_visit.buffered do
+        0 -> HNSince.AllTimeStoriesCache.get()
+        buffered -> Story.get_since(buffered, @conf[:stories_visible])
+      end
       |> Enum.map(fn s ->
         domain =
           case s.url do

@@ -80,7 +80,7 @@ defmodule HNSince.KeepFresh do
           Story.changeset(db_story, hn_story)
           |> Repo.update()
           |> case do
-            {:ok, struct} -> :ok
+            {:ok, _struct} -> :ok
             err -> err
           end
         end

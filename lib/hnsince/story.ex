@@ -71,4 +71,13 @@ defmodule HNSince.Story do
     |> last
     |> Repo.one()
   end
+
+  def get_since(datetime, stories_visible \\ 30) do
+    from(s in Story,
+      where: s.time > ^datetime and not is_nil(s.score),
+      order_by: [desc: s.score, desc: s.time],
+      limit: ^stories_visible
+    )
+    |> Repo.all()
+  end
 end

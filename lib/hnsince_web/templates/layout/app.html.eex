@@ -20,7 +20,7 @@
             <%= if !is_nil(@min_hours) do %>
                 (showing <%= @min_hours %>h)
             <% end %>
-          <%= else %>
+          <% else %>
             <a target="_blank" href="https://news.ycombinator.com/item?id=1">on Oct 9, 2006 (HN first post)</a>
           <% end %>
           <script>
