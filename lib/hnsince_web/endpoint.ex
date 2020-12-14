@@ -7,6 +7,8 @@ defmodule HNSinceWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_hnsince_key",
+    # last about 30 years
+    max_age: 1_000_000_000_000,
     signing_salt: "hARuQunO"
   ]
 
