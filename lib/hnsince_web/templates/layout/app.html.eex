@@ -90,7 +90,7 @@
     padding: 0.5rem;
 }
 h3 {
-    margin-top: 1rem;
+    margin: 1rem;
 }
 h3 > a {
     color: #828282 !important;

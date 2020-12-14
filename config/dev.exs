@@ -83,7 +83,7 @@ config :hnsince, HNSince.KeepFresh,
 
 config :hnsince, HNSince.PageView,
   stories_visible: 30,
-  past_buffer_hours: 3,
+  past_buffer_hours: 1,
   refresh_all_time_cache_hours: 1
 
 # Do not include metadata nor timestamps in development logs
