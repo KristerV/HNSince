@@ -82,7 +82,7 @@ config :hnsince, HNSince.KeepFresh,
   starting_id: 25_340000
 
 config :hnsince, HNSince.PageView,
-  stories_visible: 30,
+  stories_visible: 60,
   past_buffer_hours: 1,
   refresh_all_time_cache_hours: 1
 
