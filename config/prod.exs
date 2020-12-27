@@ -36,7 +36,7 @@ config :hnsince, HNSince.PageView,
   past_buffer_hours: 1,
   refresh_all_time_cache_hours: 1,
   visits_memory_size: 6,
-  analytics_hook: "https://bashboard.io/hnsince/general/visits"
+  analytics_hook: "https://bashboard.io/hnsince/general/"
 
 # ## SSL Support
 #

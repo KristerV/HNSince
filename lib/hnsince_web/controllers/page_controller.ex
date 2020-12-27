@@ -5,16 +5,6 @@ defmodule HNSinceWeb.PageController do
   use HNSinceWeb, :controller
 
   def index(conn, params) do
-    Task.start(fn ->
-      if @conf[:analytics_hook] do
-        HTTPoison.post(
-          @conf[:analytics_hook],
-          "{\"visit\": 1}",
-          [{"Content-Type", "application/json"}]
-        )
-      end
-    end)
-
     session_visits =
       get_session(conn, :last_visits) || Enum.map(1..@conf[:visits_memory_size], fn _ -> nil end)
 
@@ -44,6 +34,38 @@ defmodule HNSinceWeb.PageController do
               end
           }
       end
+
+    Task.start(fn ->
+      url = @conf[:analytics_hook]
+
+      if !is_nil(url) do
+        case last_visit.session do
+          nil ->
+            HTTPoison.post(
+              url <> "visits",
+              "{\"visit\": 1}",
+              [{"Content-Type", "application/json"}]
+            )
+
+          _session ->
+            HTTPoison.post(
+              url <> "visits",
+              "{\"returning\": 1}",
+              [{"Content-Type", "application/json"}]
+            )
+        end
+
+        if Timex.diff(DateTime.utc_now(), DateTime.from_unix!(last_visit.buffered), :hours) > 24 and
+             is_nil(params["visit"]) and
+             !is_nil(last_visit.session) do
+          HTTPoison.post(
+            url <> "unique",
+            "{\"unique day\": 1}",
+            [{"Content-Type", "application/json"}]
+          )
+        end
+      end
+    end)
 
     previous_visits =
       for visit <- session_visits, !is_nil(visit) do
