@@ -24,6 +24,7 @@ Prequisites
 
 ```
 mix deps.get
+npm install --prefix assets
 mix ecto.setup
 mix phx.server
 ```

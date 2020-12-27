@@ -29,6 +29,9 @@
           })
           </script>
           </h3></td>
+          <%= if @visit_override do %>
+            <p><a href="/">"Last visit" time is overridden. Back to most recent</a></p>
+          <% end %>
         <table id="hnmain" border="0" cellpadding="0" cellspacing="0" width="85%" bgcolor="#f6f6ef">
             <tr>
                 <td bgcolor="#ff6600">
@@ -75,6 +78,14 @@
                 </td>
             </tr>
         </table>
+        <%= if length(@previous_visits) > 0 do %>
+            <div>
+                <h3>Your previous visits</h3>
+                <%= for visit <- @previous_visits do %>
+                    <p><a style="color: #828282" href="?visit=<%= visit.unix_utc %>"><%= visit.human %></a></p>
+                <% end %>
+            </div>
+        <% end %>
     </center>
 </body>
 <%# <script type='text/javascript' src='https://news.ycombinator.com/hn.js'></script> %>
