@@ -6,7 +6,9 @@ defmodule HNSinceWeb.PageController do
 
   def index(conn, params) do
     session_visits =
-      get_session(conn, :last_visits) || Enum.map(1..@conf[:visits_memory_size], fn _ -> nil end)
+      get_session(conn, :last_visits) ||
+        Enum.map(2..@conf[:visits_memory_size], fn _ -> nil end) ++
+          [get_session(conn, :last_visit)]
 
     session_last =
       case params["visit"] do
