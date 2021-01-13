@@ -12,7 +12,7 @@
             </center>
         </td>
         <td class="title">
-        <a href="<%= story.url %>" class="storylink"><%= story.title %></a>
+        <a href="<%= story.url || "https://news.ycombinator.com/item?id=#{story.hn_id}" %>" class="storylink"><%= story.title %></a>
         <span class="sitebit comhead"> (
             <a href="https://news.ycombinator.com/from?site=<%= story.domain %>">
                 <span class="sitestr"><%= story.domain %></span>

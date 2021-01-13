@@ -79,6 +79,7 @@ defmodule HNSinceWeb.PageController do
       |> Enum.reverse()
       |> Enum.reduce([], fn x, acc ->
         h = x.human
+
         case List.last(acc) do
           nil -> [x]
           %{:human => ^h} -> acc
