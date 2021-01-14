@@ -1,41 +1,45 @@
 alias HNSince.Story, as: Story
 
 defmodule HNSinceWeb.PageController do
+  alias HNSince.LastVisit, as: LastVisit
   @conf Application.get_env(:hnsince, HNSince.PageView)
   use HNSinceWeb, :controller
 
+  def index(conn, %{"lock" => lock}) when lock == "false" do
+    IO.puts("delete_session")
+
+    conn
+    |> delete_session(:lock)
+    |> index(%{})
+  end
+
+  def index(conn, %{"lock" => lock}) do
+    IO.puts("lock")
+
+    conn
+    |> put_session(:lock, String.to_integer(lock))
+    |> index(%{})
+  end
+
   def index(conn, params) do
+    lock = get_session(conn, :lock)
+    forced_visit = params["visit"]
+
     session_visits =
       get_session(conn, :last_visits) ||
         Enum.map(2..@conf[:visits_memory_size], fn _ -> nil end) ++
           [get_session(conn, :last_visit)]
 
     session_last =
-      case params["visit"] do
-        nil -> session_visits |> List.last()
-        unix -> unix |> String.to_integer() |> DateTime.from_unix!()
+      {forced_visit, lock}
+      |> IO.inspect(label: "SESSION_LAST")
+      |> case do
+        {nil, nil} -> session_visits |> List.last()
+        {unix, nil} -> unix |> String.to_integer() |> DateTime.from_unix!()
+        {_, lock} -> lock |> DateTime.from_unix!()
       end
 
-    last_visit =
-      case session_last do
-        nil ->
-          %{session: nil, buffered: 0, human: nil, min_hours: nil}
-
-        %DateTime{} = dt ->
-          %{
-            session: dt,
-            buffered:
-              DateTime.add(dt, -60 * 60 * @conf[:past_buffer_hours], :second)
-              |> DateTime.to_unix(),
-            human: Timex.from_now(dt),
-            min_hours:
-              if Timex.diff(DateTime.utc_now(), dt, :hours) < @conf[:past_buffer_hours] do
-                @conf[:past_buffer_hours]
-              else
-                nil
-              end
-          }
-      end
+    last_visit = LastVisit.from_datetime(session_last, @conf[:past_buffer_hours])
 
     Task.start(fn ->
       url = @conf[:analytics_hook]
@@ -58,7 +62,7 @@ defmodule HNSinceWeb.PageController do
         end
 
         if Timex.diff(DateTime.utc_now(), DateTime.from_unix!(last_visit.buffered), :hours) > 24 and
-             is_nil(params["visit"]) and
+             is_nil(forced_visit) and
              !is_nil(last_visit.session) do
           HTTPoison.post(
             url <> "unique",
@@ -69,27 +73,10 @@ defmodule HNSinceWeb.PageController do
       end
     end)
 
-    previous_visits =
-      for visit <- session_visits, !is_nil(visit) do
-        %{
-          human: Timex.from_now(visit),
-          unix_utc: DateTime.to_unix(visit)
-        }
-      end
-      |> Enum.reverse()
-      |> Enum.reduce([], fn x, acc ->
-        h = x.human
-
-        case List.last(acc) do
-          nil -> [x]
-          %{:human => ^h} -> acc
-          _ -> acc ++ [x]
-        end
-      end)
-      |> Enum.drop(1)
+    previous_visits = LastVisit.format_previous_visits(session_visits)
 
     conn =
-      if is_nil(params["visit"]) do
+      if is_nil(forced_visit) and is_nil(lock) do
         session_visits
         |> Enum.concat([DateTime.utc_now()])
         |> (&Enum.drop(&1, length(&1) - @conf[:visits_memory_size])).()
@@ -124,9 +111,11 @@ defmodule HNSinceWeb.PageController do
     render(conn, "index.html",
       last_visit: last_visit.human,
       min_hours: last_visit.min_hours,
+      current_visit_utc: DateTime.to_unix(last_visit.session),
       stories: stories,
       previous_visits: previous_visits,
-      visit_override: params["visit"]
+      forced_visit: forced_visit,
+      lock: lock
     )
   end
 end
