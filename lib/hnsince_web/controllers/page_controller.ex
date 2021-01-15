@@ -41,38 +41,6 @@ defmodule HNSinceWeb.PageController do
 
     last_visit = LastVisit.from_datetime(session_last, @conf[:past_buffer_hours])
 
-    Task.start(fn ->
-      url = @conf[:analytics_hook]
-
-      if !is_nil(url) do
-        case last_visit.session do
-          nil ->
-            HTTPoison.post(
-              url <> "visits",
-              "{\"visit\": 1}",
-              [{"Content-Type", "application/json"}]
-            )
-
-          _session ->
-            HTTPoison.post(
-              url <> "visits",
-              "{\"returning\": 1}",
-              [{"Content-Type", "application/json"}]
-            )
-        end
-
-        if Timex.diff(DateTime.utc_now(), DateTime.from_unix!(last_visit.buffered), :hours) > 24 and
-             is_nil(forced_visit) and
-             !is_nil(last_visit.session) do
-          HTTPoison.post(
-            url <> "unique",
-            "{\"unique day\": 1}",
-            [{"Content-Type", "application/json"}]
-          )
-        end
-      end
-    end)
-
     previous_visits = LastVisit.format_previous_visits(session_visits)
 
     conn =

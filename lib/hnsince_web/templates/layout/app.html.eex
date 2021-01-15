@@ -96,6 +96,7 @@
     </center>
 </body>
 <%# <script type='text/javascript' src='https://news.ycombinator.com/hn.js'></script> %>
+<script async defer data-domain="hnsince.com" src="https://plausible.io/js/plausible.js"></script>
 
 <style>
 #gh-logo {
