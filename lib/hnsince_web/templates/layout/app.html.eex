@@ -7,7 +7,7 @@
     <link rel="shortcut icon" href="/favicon.ico">
     <link rel="alternate" type="application/rss+xml" title="RSS" href="https://news.ycombinator.com/rss">
     <title>HN Since</title>
-    <script async defer data-domain="hnsince.com" src="https://plausible.io/js/plausible.js"></script>
+    <script async defer data-domain="hnsince.com" src="https://stats.randomforest.ee/js/index.js"></script>
 </head>
 
 <body>
