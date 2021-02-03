@@ -1,15 +1,16 @@
 defmodule HNSince.LastVisit do
   alias HNSince.LastVisit, as: LastVisit
-  defstruct [:session, :buffered, :human, :min_hours]
+  defstruct [:session, :session_unix, :buffered, :human, :min_hours]
 
   def from_datetime(datetime, past_buffer_hours) do
     case datetime do
       nil ->
-        %LastVisit{session: nil, buffered: 0, human: nil, min_hours: nil}
+        %LastVisit{session: nil, session_unix: nil, buffered: 0, human: nil, min_hours: nil}
 
       %DateTime{} = dt ->
         %LastVisit{
           session: dt,
+          session_unix: DateTime.to_unix(dt),
           buffered:
             DateTime.add(dt, -60 * 60 * past_buffer_hours, :second)
             |> DateTime.to_unix(),

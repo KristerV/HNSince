@@ -32,7 +32,6 @@ defmodule HNSinceWeb.PageController do
 
     session_last =
       {forced_visit, lock}
-      |> IO.inspect(label: "SESSION_LAST")
       |> case do
         {nil, nil} -> session_visits |> List.last()
         {unix, nil} -> unix |> String.to_integer() |> DateTime.from_unix!()
@@ -79,7 +78,7 @@ defmodule HNSinceWeb.PageController do
     render(conn, "index.html",
       last_visit: last_visit.human,
       min_hours: last_visit.min_hours,
-      current_visit_utc: DateTime.to_unix(last_visit.session),
+      current_visit_utc: last_visit.session_unix,
       stories: stories,
       previous_visits: previous_visits,
       forced_visit: forced_visit,
