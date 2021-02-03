@@ -8,6 +8,7 @@
     <link rel="alternate" type="application/rss+xml" title="RSS" href="https://news.ycombinator.com/rss">
     <title>HN Since</title>
     <script async defer data-domain="hnsince.com" src="https://plausible.randomforest.ee/pls.js"></script>
+    <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
 </head>
 
 <body>
@@ -123,5 +124,11 @@ h3 > a {
 }
 
 </style>
+
+<script>
+const visitCount = localStorage.getItem("visit-count") || 0
+plausible('visit', {props: {count: visitCount}})
+localStorage.setItem("visit-count", visitCount + 1)
+</script>
 
 </html>
