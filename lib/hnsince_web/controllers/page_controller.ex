@@ -1,88 +1,44 @@
 alias HNSince.Story, as: Story
 
 defmodule HNSinceWeb.PageController do
-  alias HNSince.LastVisit, as: LastVisit
-  @conf Application.get_env(:hnsince, HNSince.PageView)
+  alias HNSince.Visit
+  alias HNSince.Story
+  alias HNSinceWeb.RouterHelpers
   use HNSinceWeb, :controller
-
-  def index(conn, %{"lock" => lock}) when lock == "false" do
-    IO.puts("delete_session")
-
-    conn
-    |> delete_session(:lock)
-    |> index(%{})
-  end
-
-  def index(conn, %{"lock" => lock}) do
-    IO.puts("lock")
-
-    conn
-    |> put_session(:lock, String.to_integer(lock))
-    |> index(%{})
-  end
+  @conf Application.get_env(:hnsince, HNSince.PageView)
 
   def index(conn, params) do
-    lock = get_session(conn, :lock)
-    forced_visit = params["visit"]
+    session_id = params["session_id"] || get_session(conn, "session_id") || Ecto.UUID.generate()
+    conn = RouterHelpers.handle_legacy_sessions(conn, session_id)
+    conn = put_session(conn, "session_id", session_id)
 
-    session_visits =
-      get_session(conn, :last_visits) ||
-        Enum.map(2..@conf[:visits_memory_size], fn _ -> nil end) ++
-          [get_session(conn, :last_visit)]
+    lock = RouterHelpers.parse_lock(params["lock"], session_id)
+    forced = RouterHelpers.parse_forced(params["visit"])
 
-    session_last =
-      {forced_visit, lock}
-      |> case do
-        {nil, nil} -> session_visits |> List.last()
-        {unix, nil} -> unix |> String.to_integer() |> DateTime.from_unix!()
-        {_, lock} -> lock |> DateTime.from_unix!()
-      end
-
-    last_visit = LastVisit.from_datetime(session_last, @conf[:past_buffer_hours])
-
-    previous_visits = LastVisit.format_previous_visits(session_visits)
-
-    conn =
-      if is_nil(forced_visit) and is_nil(lock) do
-        session_visits
-        |> Enum.concat([DateTime.utc_now()])
-        |> (&Enum.drop(&1, length(&1) - @conf[:visits_memory_size])).()
-        |> (&put_session(conn, :last_visits, &1)).()
-      else
-        conn
+    bookmark =
+      case Visit.get_last(session_id, lock) do
+        nil -> DateTime.from_unix!(0)
+        visit -> Visit.get_bookmark(visit)
       end
 
     stories =
-      case last_visit.buffered do
-        0 -> HNSince.AllTimeStoriesCache.get()
-        buffered -> Story.get_since(buffered, @conf[:stories_visible])
-      end
-      |> Enum.map(fn s ->
-        domain =
-          case s.url do
-            nil -> nil
-            url -> URI.parse(url).authority
-          end
+      (forced || bookmark)
+      |> Story.get_since()
+      |> Enum.map(&Story.put_extra_fields/1)
 
-        past =
-          with {:ok, t} = DateTime.from_unix(s.time) do
-            Timex.from_now(t)
-          end
+    last_story_current = Story.find_last_story(stories, bookmark)
 
-        Map.merge(s, %{
-          domain: domain,
-          past: past
-        })
-      end)
+    previous_visits =
+      Visit.get_visits_tail(session_id, @conf[:show_previous_visits])
+      |> Enum.map(&Visit.put_extra_fields/1)
+
+    Visit.insert(session_id, last_story_current, lock, forced)
 
     render(conn, "index.html",
-      last_visit: last_visit.human,
-      min_hours: last_visit.min_hours,
-      current_visit_utc: last_visit.session_unix,
-      stories: stories,
+      lock: lock,
+      forced: forced,
       previous_visits: previous_visits,
-      forced_visit: forced_visit,
-      lock: lock
+      stories: stories
     )
   end
 end

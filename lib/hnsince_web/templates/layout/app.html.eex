@@ -16,26 +16,27 @@
         <img src="https://raw.githubusercontent.com/rdimascio/icons/master/icons/github.svg"/>
     </a>
     <center>
+
           <td><h3>HN Since your last visit
-          <%= if !is_nil(@last_visit) do %>
-            <%= @last_visit %>
-            <%= if !is_nil(@min_hours) do %>
-                (showing <%= @min_hours %>h)
+
+          <%= cond do %>
+            <% !is_nil(@forced) -> %> <%= @forced |> Timex.from_now() %>
+            <% length(@previous_visits) > 0 -> %> <%= @previous_visits |> List.first() |> Map.get(:human) %>
+            <%= if @lock do %>
+                <a title="unlock visit time" href="?lock=false">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" class="lock-icon"><path d="M18 10v-4c0-3.313-2.687-6-6-6s-6 2.687-6 6v4h-3v14h18v-14h-3zm-10 0v-4c0-2.206 1.794-4 4-4s4 1.794 4 4v4h-8z"/></svg>
+                </a>
+            <% else %>
+                <a title="lock visit time so you can continue from here next visit" href="?lock=<%= @previous_visits |> List.first() |> Map.get(:inserted_at) |> DateTime.to_unix() %>">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" class="lock-icon"><path d="M8 10v-4c0-2.206 1.794-4 4-4 2.205 0 4 1.794 4 4v1h2v-1c0-3.313-2.687-6-6-6s-6 2.687-6 6v4h-3v14h18v-14h-13z"/></svg>
+                </a>
             <% end %>
-          <% else %>
-            <a target="_blank" href="https://news.ycombinator.com/item?id=1">on Oct 9, 2006 (HN first post)</a>
+            <% true -> %> <a target="_blank" href="https://news.ycombinator.com/item?id=1">on Oct 9, 2006 (HN first post)</a>
           <% end %>
-          <%= if @lock do %>
-            <a title="unlock visit time" href="?lock=false">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" class="lock-icon"><path d="M18 10v-4c0-3.313-2.687-6-6-6s-6 2.687-6 6v4h-3v14h18v-14h-3zm-10 0v-4c0-2.206 1.794-4 4-4s4 1.794 4 4v4h-8z"/></svg>
-            </a>
-          <% else %>
-            <a title="lock visit time so you can continue from here next visit" href="?lock=<%= @current_visit_utc %>">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" class="lock-icon"><path d="M8 10v-4c0-2.206 1.794-4 4-4 2.205 0 4 1.794 4 4v1h2v-1c0-3.313-2.687-6-6-6s-6 2.687-6 6v4h-3v14h18v-14h-13z"/></svg>
-            </a>
-          <% end %>
+
           </h3></td>
-          <%= if !is_nil(@forced_visit) and is_nil(@lock) do %>
+
+          <%= if !is_nil(@forced) and is_nil(@lock) do %>
             <p><a href="/" class="hns-subtext">"Last visit" time is overridden. Click here to see recent stories.</a></p>
           <% end %>
           <%= if @lock do %>
@@ -90,8 +91,8 @@
         <%= if length(@previous_visits) > 0 do %>
             <div>
                 <h3>Your previous visits</h3>
-                <%= for visit <- @previous_visits do %>
-                    <p><a style="color: #828282" href="?visit=<%= visit.unix_utc %>"><%= visit.human %></a></p>
+                <%= for visit <- List.delete_at(@previous_visits, 0) do %>
+                    <p><a style="color: #828282" href="?visit=<%= visit.unix %>"><%= visit.human %></a></p>
                 <% end %>
             </div>
         <% end %>

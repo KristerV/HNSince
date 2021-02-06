@@ -35,7 +35,7 @@ config :hnsince, HNSince.PageView,
   stories_visible: 60,
   past_buffer_hours: 1,
   refresh_all_time_cache_hours: 1,
-  visits_memory_size: 6
+  show_previous_visits: 6
 
 # ## SSL Support
 #

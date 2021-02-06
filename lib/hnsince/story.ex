@@ -3,8 +3,8 @@ defmodule HNSince.Story do
   use Ecto.Schema
   import Ecto.Changeset
   import Ecto.Query
-  alias HNSince.Repo, as: Repo
-  alias HNSince.Story, as: Story
+  alias HNSince.Repo
+  alias HNSince.Story
 
   schema "stories" do
     field :by, :string
@@ -20,23 +20,6 @@ defmodule HNSince.Story do
     story
     |> cast(attrs, [:hn_id, :by, :descendants, :score, :time, :title, :url])
     |> validate_required([:hn_id, :score, :time, :title])
-  end
-
-  def get_and_upsert(hn_id) do
-    HNSince.HNAPI.get_item(hn_id)
-    |> case do
-      {:error, err} ->
-        Logger.warning("Fetching HN item error", err)
-        {:error, err}
-
-      {:ok, %{"type" => "story"} = item} ->
-        item
-        |> from_item()
-        |> upsert()
-
-      {:ok, %{"type" => _}} ->
-        {:error, :wront_type}
-    end
   end
 
   def upsert(%Story{hn_id: hn_id} = story) do
@@ -72,12 +55,53 @@ defmodule HNSince.Story do
     |> Repo.one()
   end
 
-  def get_since(datetime, stories_visible \\ 30) do
+  def get_since(datetime, stories_visible \\ 30)
+
+  def get_since(nil, stories_visible) do
+    HNSince.AllTimeStoriesCache.get()
+  end
+
+  def get_since(%DateTime{} = dt, stories_visible) do
+    dt
+    |> DateTime.to_unix()
+    |> get_since(stories_visible)
+  end
+
+  def get_since(datetime, stories_visible) when is_integer(datetime) do
     from(s in Story,
       where: s.time > ^datetime and not is_nil(s.score),
       order_by: [desc: s.score, desc: s.time],
       limit: ^stories_visible
     )
     |> Repo.all()
+  end
+
+  def put_extra_fields(story) do
+    domain =
+      case story.url do
+        nil -> nil
+        url -> URI.parse(url).authority
+      end
+
+    past =
+      with {:ok, t} = DateTime.from_unix(story.time) do
+        Timex.from_now(t)
+      end
+
+    Map.merge(story, %{
+      domain: domain,
+      past: past
+    })
+  end
+
+  def find_last_story([], prev_last_story) do
+    prev_last_story
+  end
+
+  def find_last_story(stories, _prev_last_story) when is_list(stories) do
+    Enum.reduce(stories, 0, fn s, acc ->
+      max(s.time, acc)
+    end)
+    |> DateTime.from_unix!()
   end
 end
