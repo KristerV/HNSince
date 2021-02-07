@@ -1,6 +1,7 @@
 UNRELEASED
 
 - [ ] Session can be shared between devices
+- [ ] Ask for support with launch
 - [x] Last story shown is where we continue reading next time
-- [ ] Show last 30 day statistics
-- [ ] About section with changelog link
+- [x] Show statistics
+- [x] About section with changelog link
