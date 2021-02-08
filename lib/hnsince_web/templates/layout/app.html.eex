@@ -42,6 +42,7 @@
                 <p>We're launching on HN in a month. Get notified by email
                 <script>
                 function handleEmailSubmit(e) {
+                    plausible('gave-email')
                     e.preventDefault()
                     const email = e.target.querySelector("input[type=email]").value
                     fetch('/api/v1/submit-email?email=' + email)
