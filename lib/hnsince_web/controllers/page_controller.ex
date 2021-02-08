@@ -31,6 +31,15 @@ defmodule HNSinceWeb.PageController do
     previous_visits =
       Visit.get_visits_tail(session_id, @conf[:show_previous_visits])
       |> Enum.map(&Visit.put_extra_fields/1)
+      |> Enum.reduce([], fn x, acc ->
+        h = x.human
+
+        case List.last(acc) do
+          nil -> [x]
+          %{:human => ^h} -> acc
+          _ -> acc ++ [x]
+        end
+      end)
 
     Visit.insert(session_id, last_story_current, lock, forced)
 
