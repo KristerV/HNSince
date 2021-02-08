@@ -61,7 +61,8 @@ defmodule HNSinceWeb.RouterHelpers do
     new_visits =
       if plug_session["lock"] do
         last = List.last(new_visits)
-        new_visits ++ [Map.put(last, :lock, last.inserted_at)]
+        lock = DateTime.from_unix!(plug_session["lock"])
+        new_visits ++ [Map.put(last, :lock, lock)]
       else
         new_visits
       end
@@ -69,9 +70,8 @@ defmodule HNSinceWeb.RouterHelpers do
     Repo.insert_all(Visit, new_visits)
 
     conn
-    # Don't delete session until a later update when everything is confirmed working.
-    # |> delete_session(:last_visit)
-    # |> delete_session(:last_visits)
-    # |> delete_session(:lock)
+    |> delete_session(:last_visit)
+    |> delete_session(:last_visits)
+    |> delete_session(:lock)
   end
 end
