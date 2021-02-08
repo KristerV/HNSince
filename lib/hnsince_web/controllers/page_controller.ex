@@ -7,6 +7,12 @@ defmodule HNSinceWeb.PageController do
   use HNSinceWeb, :controller
   @conf Application.get_env(:hnsince, HNSince.PageView)
 
+  def index(conn, %{"session_id" => "reset"}) do
+    conn
+    |> delete_session(:session_id)
+    |> index(%{})
+  end
+
   def index(conn, params) do
     session_id = params["session_id"] || get_session(conn, "session_id") || Ecto.UUID.generate()
     conn = RouterHelpers.handle_legacy_sessions(conn, session_id)
@@ -47,7 +53,8 @@ defmodule HNSinceWeb.PageController do
       lock: lock,
       forced: forced,
       previous_visits: previous_visits,
-      stories: stories
+      stories: stories,
+      session_id: session_id
     )
   end
 end
