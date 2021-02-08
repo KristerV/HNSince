@@ -105,6 +105,8 @@
             <p>I know you don't want to miss any stories so I've made sure even the ones that become popular later are still shown. This is only a 48h window though.</p>
             <h5>How are stories ordered</h5>
             <p>First by points, so most popular posts are always at the top. Second by time (ascending) so if you're visiting every hour you'll get to read all of the stories that are posted (the last story you see will be the newest).</p>
+            <h5>Many stories turn out empty after clicking</h5>
+            <p>HN deletes a lot of stories it deems as spam. If you're visiting so often that you see 1 point stories, then they may be deleted from HN right after your page loads. I thought it was strange at first, but when I started following the links (story may be empty, but your HNSince page still has the link) I realized that moderation is what keeps HN interesting.</p>
             <h5>I have some thoughts...</h5>
             <p>I'd love to hear them either in Discussions / Issues or email me hnsince[ät]krister.ee.</p>
             <h5>How many people come through here?</h5>
