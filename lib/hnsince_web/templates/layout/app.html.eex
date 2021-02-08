@@ -97,19 +97,21 @@
             </div>
         <% end %>
 
-            <div class="btm-text">
-                <h3>FAQ</h3>
-                <h5>What is this?</h5>
-                <p>Read the top stories since you last visited. No FOMO during vacation! Or if you're a nut and read every hour - now you'll only see new stories (unline /new, where you must figure out where you left off yourself.</p>
-                <h5>So why am I still seeing older stories than my last visit?</h5>
-                <p>I know you don't want to miss any stories so I've made sure even the ones that become popular later are still shown. This is only a 48h window though.</p>
-                <h5>I have some thoughts...</h5>
-                <p>I'd love to hear them either in Discussions / Issues or email me hnsince[ät]krister.ee.</p>
-                <h5>How many people come through here?</h5>
-                <p>There are public stats available at <a target="_blank" href="https://plausible.io/hnsince.com">Plausible (click here)</a>.</p>
-                <h5>Something has changed.. did you do that?</h5>
-                <p>You can find the changelog in <a target="_blank" href="https://github.com/KristerV/HNSince/blob/main/CHANGELOG.md">the repo (click here)</a>.</p>
-            </div>
+        <div class="btm-text">
+            <h3>FAQ</h3>
+            <h5>What is this?</h5>
+            <p>Read the top stories since you last visited. No FOMO during vacation! Or if you're a nut and read every hour - now you'll only see new stories (unline /new, where you must figure out where you left off yourself.</p>
+            <h5>So why am I still seeing older stories than my last visit?</h5>
+            <p>I know you don't want to miss any stories so I've made sure even the ones that become popular later are still shown. This is only a 48h window though.</p>
+            <h5>How are stories ordered</h5>
+            <p>First by points, so most popular posts are always at the top. Second by time (ascending) so if you're visiting every hour you'll get to read all of the stories that are posted (the last story you see will be the newest).</p>
+            <h5>I have some thoughts...</h5>
+            <p>I'd love to hear them either in Discussions / Issues or email me hnsince[ät]krister.ee.</p>
+            <h5>How many people come through here?</h5>
+            <p>There are public stats available at <a target="_blank" href="https://plausible.io/hnsince.com">Plausible (click here)</a>.</p>
+            <h5>Something has changed.. did you do that?</h5>
+            <p>You can find the changelog in <a target="_blank" href="https://github.com/KristerV/HNSince/blob/main/CHANGELOG.md">the repo (click here)</a>.</p>
+        </div>
     </center>
 </body>
 <%# <script type='text/javascript' src='https://news.ycombinator.com/hn.js'></script> %>

@@ -57,7 +57,7 @@ defmodule HNSince.Story do
 
   def get_since(datetime, stories_visible \\ 30)
 
-  def get_since(nil, stories_visible) do
+  def get_since(nil, _stories_visible) do
     HNSince.AllTimeStoriesCache.get()
   end
 
@@ -70,7 +70,7 @@ defmodule HNSince.Story do
   def get_since(datetime, stories_visible) when is_integer(datetime) do
     from(s in Story,
       where: s.time > ^datetime and not is_nil(s.score),
-      order_by: [desc: s.score, desc: s.time],
+      order_by: [desc: s.score, asc: s.time],
       limit: ^stories_visible
     )
     |> Repo.all()
