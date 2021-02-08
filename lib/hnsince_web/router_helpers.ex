@@ -69,8 +69,9 @@ defmodule HNSinceWeb.RouterHelpers do
     Repo.insert_all(Visit, new_visits)
 
     conn
-    |> delete_session(:last_visit)
-    |> delete_session(:last_visits)
-    |> delete_session(:lock)
+    # Don't delete session until a later update when everything is confirmed working.
+    # |> delete_session(:last_visit)
+    # |> delete_session(:last_visits)
+    # |> delete_session(:lock)
   end
 end
