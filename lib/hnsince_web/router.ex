@@ -19,6 +19,12 @@ defmodule HNSinceWeb.Router do
     get "/", PageController, :index
   end
 
+  scope "/api/v1" do
+    pipe_through :api
+
+    get "/submit-email", HNSinceWeb.APIController, :submit_email
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", HNSinceWeb do
   #   pipe_through :api

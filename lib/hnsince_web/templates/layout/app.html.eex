@@ -36,6 +36,27 @@
 
           </h3></td>
 
+          <%= if is_nil(@launch_seen) do %>
+            <div id="email-list">
+                <p>You're an early adopter of HNSince!</p>
+                <p>We're launching on HN in a month. Get notified by email
+                <script>
+                function handleEmailSubmit(e) {
+                    e.preventDefault()
+                    const email = e.target.querySelector("input[type=email]").value
+                    fetch('/api/v1/submit-email?email=' + email)
+                    document.querySelector("#email-list").innerHTML = "Nice! You'll be the first to know"
+                }
+                </script>
+                <form onsubmit="handleEmailSubmit(event)">
+                    <input placeholder="your email" type="email"/>
+                    <input type="submit" value="send">
+                </form>
+                </p>
+            </div>
+          <% end %>
+
+
           <%= if !is_nil(@forced) and is_nil(@lock) do %>
             <p><a href="/" class="hns-subtext">"Last visit" time is overridden. Click here to see recent stories.</a></p>
           <% end %>

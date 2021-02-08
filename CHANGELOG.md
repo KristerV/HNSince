@@ -1,7 +1,7 @@
 UNRELEASED
 
 - [x] Session can be shared between devices
-- [ ] Ask for support with launch
+- [x] Ask for support with launch
 
 2021-02-08
 

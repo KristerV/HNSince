@@ -1,5 +1,3 @@
-alias HNSince.Story, as: Story
-
 defmodule HNSinceWeb.PageController do
   alias HNSince.Visit
   alias HNSince.Story
@@ -49,12 +47,16 @@ defmodule HNSinceWeb.PageController do
 
     Visit.insert(session_id, last_story_current, lock, forced)
 
+    launch_seen = get_session(conn, "launch_seen")
+    conn = put_session(conn, "launch_seen", true)
+
     render(conn, "index.html",
       lock: lock,
       forced: forced,
       previous_visits: previous_visits,
       stories: stories,
-      session_id: session_id
+      session_id: session_id,
+      launch_seen: launch_seen
     )
   end
 end
