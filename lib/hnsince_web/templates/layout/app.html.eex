@@ -189,10 +189,4 @@ h3 > a {
 
 </style>
 
-<script>
-const visitCount = localStorage.getItem("visit-count") || 0
-plausible('visit', {props: {count: visitCount}})
-localStorage.setItem("visit-count", visitCount + 1)
-</script>
-
 </html>
