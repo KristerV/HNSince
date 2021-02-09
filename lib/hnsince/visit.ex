@@ -75,10 +75,10 @@ defmodule HNSince.Visit do
     })
   end
 
-  def get_bookmark(visit) do
-    visit.inserted_at
+  def max_story(last_story) do
+    DateTime.utc_now()
     |> DateTime.add(-48 * 60 * 60)
-    |> max(visit.last_story)
+    |> max(last_story)
   end
 
   def remove_duplicate_dates(visits) do

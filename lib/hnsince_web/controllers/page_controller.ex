@@ -30,14 +30,16 @@ defmodule HNSinceWeb.PageController do
       |> Story.get_since()
       |> Enum.map(&Story.put_extra_fields/1)
 
-    last_story_current = Story.find_last_story(stories, bookmark)
+    last_story_current =
+      Story.find_last_story(stories, bookmark)
+      |> Visit.max_story()
 
     previous_visits =
       Visit.get_visits_tail(session_id, @conf[:show_previous_visits])
       |> Enum.map(&Visit.put_extra_fields/1)
       |> Visit.remove_duplicate_dates()
 
-    Visit.insert(session_id, last_story_current, lock, forced, bookmark)
+    Visit.insert(session_id, last_story_current, lock, forced, last_story_current)
 
     launch_seen = get_session(conn, "launch_seen")
     conn = put_session(conn, "launch_seen", true)
