@@ -78,4 +78,16 @@ defmodule HNSince.Visit do
     |> DateTime.add(-48 * 60 * 60)
     |> max(visit.last_story)
   end
+
+  def remove_duplicate_dates(visits) do
+    Enum.reduce(visits, [], fn x, acc ->
+      h = x.human
+
+      case List.last(acc) do
+        nil -> [x]
+        %{:human => ^h} -> acc
+        _ -> acc ++ [x]
+      end
+    end)
+  end
 end
