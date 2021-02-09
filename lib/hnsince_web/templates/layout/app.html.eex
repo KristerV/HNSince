@@ -110,7 +110,15 @@
                 </td>
             </tr>
         </table>
-        <%= if length(@previous_visits) > 0 do %>
+        <%= if length(@previous_visits) == 1 do %>
+            <div>
+                <h3>Your previous visits</h3>
+                <%= for visit <- @previous_visits do %>
+                    <p><a style="color: #828282" href="?visit=<%= visit.unix %>"><%= visit.human %></a></p>
+                <% end %>
+            </div>
+        <% end %>
+        <%= if length(@previous_visits) > 1 do %>
             <div>
                 <h3>Your previous visits</h3>
                 <%= for visit <- List.delete_at(@previous_visits, 0) do %>
@@ -134,7 +142,7 @@
             <h5>Many stories turn out empty after clicking</h5>
             <p>HN deletes a lot of stories it deems as spam. If you're visiting so often that you see 1 point stories, then they may be deleted from HN right after your page loads. I thought it was strange at first, but when I started following the links (story may be empty, but your HNSince page still has the link) I realized that moderation is what keeps HN interesting.</p>
 
-            <h5>Can I share my session between deviced?</h5>
+            <h5>Can I share my session between devices?</h5>
             <p>Sure. Just copy <a href="?session_id=<%= @session_id %>">this link</a> and open it in your other device. The old session in the other device will be overwritten. To reset a session <a href="?session_id=reset">click here</a>.</p>
 
             <h5>I have some thoughts...</h5>
