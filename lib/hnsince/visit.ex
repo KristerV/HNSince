@@ -10,6 +10,7 @@ defmodule HNSince.Visit do
     field :last_story, :utc_datetime
     field :lock, :utc_datetime
     field :forced, :utc_datetime
+    field :bookmark, :utc_datetime
 
     timestamps(updated_at: false, type: :utc_datetime)
   end
@@ -17,8 +18,8 @@ defmodule HNSince.Visit do
   @doc false
   def changeset(visit, attrs) do
     visit
-    |> cast(attrs, [:session_id, :last_story, :lock, :forced])
-    |> validate_required([:session_id, :last_story])
+    |> cast(attrs, [:session_id, :last_story, :lock, :forced, :bookmark])
+    |> validate_required([:session_id, :last_story, :bookmark])
   end
 
   def get_last(session_id, lock \\ nil)
@@ -55,13 +56,14 @@ defmodule HNSince.Visit do
     )
   end
 
-  def insert(session_id, last_story_dt, lock, forced) do
+  def insert(session_id, last_story_dt, lock, forced, bookmark) do
     %Visit{}
     |> changeset(%{
       session_id: session_id,
       last_story: last_story_dt,
       lock: lock,
-      forced: forced
+      forced: forced,
+      bookmark: bookmark
     })
     |> Repo.insert()
   end

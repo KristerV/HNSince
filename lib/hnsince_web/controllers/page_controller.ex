@@ -22,7 +22,7 @@ defmodule HNSinceWeb.PageController do
     bookmark =
       case Visit.get_last(session_id, lock) do
         nil -> DateTime.from_unix!(0)
-        visit -> Visit.get_bookmark(visit)
+        visit -> visit.bookmark
       end
 
     stories =
@@ -37,7 +37,7 @@ defmodule HNSinceWeb.PageController do
       |> Enum.map(&Visit.put_extra_fields/1)
       |> Visit.remove_duplicate_dates()
 
-    Visit.insert(session_id, last_story_current, lock, forced)
+    Visit.insert(session_id, last_story_current, lock, forced, bookmark)
 
     launch_seen = get_session(conn, "launch_seen")
     conn = put_session(conn, "launch_seen", true)
