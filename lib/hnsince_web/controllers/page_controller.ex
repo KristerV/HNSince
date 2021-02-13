@@ -39,7 +39,7 @@ defmodule HNSinceWeb.PageController do
       |> Enum.map(&Visit.put_extra_fields/1)
       |> Visit.remove_duplicate_dates()
 
-    Visit.insert(session_id, last_story_seen, lock, forced, bookmark)
+    {:ok, current_visit} = Visit.insert(session_id, last_story_seen, lock, forced, bookmark)
 
     launch_seen = get_session(conn, "launch_seen")
     conn = put_session(conn, "launch_seen", true)
@@ -47,6 +47,7 @@ defmodule HNSinceWeb.PageController do
     render(conn, "index.html",
       lock: lock,
       forced: forced,
+      current_visit: current_visit,
       previous_visits: previous_visits,
       stories: stories,
       session_id: session_id,

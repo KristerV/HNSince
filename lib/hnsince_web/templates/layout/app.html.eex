@@ -21,16 +21,14 @@
 
           <%= cond do %>
             <% !is_nil(@forced) -> %> <%= @forced |> Timex.from_now() %>
-            <% length(@previous_visits) > 0 -> %> <%= @previous_visits |> List.first() |> Map.get(:human) %>
-            <%= if @lock do %>
+            <% !is_nil(@lock) -> %> <%= @lock |> Timex.from_now() %>
                 <a title="unlock visit time" href="?lock=false">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" class="lock-icon"><path d="M18 10v-4c0-3.313-2.687-6-6-6s-6 2.687-6 6v4h-3v14h18v-14h-3zm-10 0v-4c0-2.206 1.794-4 4-4s4 1.794 4 4v4h-8z"/></svg>
                 </a>
-            <% else %>
+            <% length(@previous_visits) > 0 -> %> <%= @previous_visits |> List.first() |> Map.get(:human) %>
                 <a title="lock visit time so you can continue from here next visit" href="?lock=<%= @previous_visits |> List.first() |> Map.get(:inserted_at) |> DateTime.to_unix() %>">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" class="lock-icon"><path d="M8 10v-4c0-2.206 1.794-4 4-4 2.205 0 4 1.794 4 4v1h2v-1c0-3.313-2.687-6-6-6s-6 2.687-6 6v4h-3v14h18v-14h-13z"/></svg>
                 </a>
-            <% end %>
             <% true -> %> <a target="_blank" href="https://news.ycombinator.com/item?id=1">on Oct 9, 2006 (HN first post)</a>
           <% end %>
 
