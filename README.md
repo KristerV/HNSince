@@ -9,9 +9,7 @@
 
 ## About
 
-I check HN sometimes hourly, sometimes monthly, (rarely, but) sometimes quarterly. I don't know how long I've been away and the FOMO on good stories was driving me nuts. There is the kind of secret [/best](https://news.ycombinator.com/best) section on HN, but that only covers a week (I think). So this idea came to me and took **only** a year to finally sit down and write it.
-
-Temporary plug: Me and my team at [randomforest.ee](https://randomforest.ee/) are available for hire.
+Miss a day in HN and you're behind on industry news. What if you want to have a weekly relationship? What if you just want to see whatever you missed since you last visited? This is the tool for you.
 
 ## Run a local server
 
@@ -30,6 +28,10 @@ mix phx.server
 ```
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+
+## Production
+
+It's hosted on DigitalOcean, CD through the `production` branch.
 
 ## Contributing
 
