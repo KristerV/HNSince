@@ -7,8 +7,7 @@
     <link rel="shortcut icon" href="/favicon.ico">
     <link rel="alternate" type="application/rss+xml" title="RSS" href="https://news.ycombinator.com/rss">
     <title>HN Since</title>
-    <script async defer data-domain="hnsince.com" src="https://plausible.randomforest.ee/pls.js"></script>
-    <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
+    <script defer src="https://a.krister.ee/script.js" data-website-id="93bffb47-8bfa-4172-b1e1-4ce442ca0439"></script>
 </head>
 
 <body>
